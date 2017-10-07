@@ -33,3 +33,7 @@ body {
 #content {
     position: relative;
 }
+
+#raw-json {
+    color: white;
+}
