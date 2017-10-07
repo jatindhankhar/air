@@ -72,6 +72,6 @@ function print_raw_json(data) {
 function init_map(lat, lng) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiamF0aW5kaGFua2hhciIsImEiOiJjajhnN3B6azUwOWIyMzJuNmNvMWlsbXg0In0.8hqJ0HFxyROInUXSN6h5KQ';
     var map = L.mapbox.map('map-container', 'mapbox.streets')
-        .setView([lat, lng], 9);
+        .setView([lat, lng], 10);
 
 }
