@@ -5,3 +5,5 @@ source "https://rubygems.org"
 
  gem 'sinatra'
  gem 'unicorn'
+ gem 'rest-client'
+ gem 'dotenv'
