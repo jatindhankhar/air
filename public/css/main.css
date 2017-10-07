@@ -5,3 +5,31 @@
 #target {
     margin-top: 60px;
 }
+
+.jumbotron {
+    background-color: transparent;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#map-container {
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
+}
+
+#content {
+    position: relative;
+}

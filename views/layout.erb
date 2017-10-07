@@ -22,15 +22,20 @@
   <!-- Custom css -->
   <link rel="stylesheet" href="css/main.css">
   <!-- Font Awesome -->
-
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
     crossorigin="anonymous">
+  <!-- Mapbox CSS -->
+  <link href='//api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+  <link href='//api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.css' rel='stylesheet' />
+
 </head>
 
 <body>
-
+  
+  <div id="map-container"></div>
+  <div id="content">
   <%= yield %>
-
+  </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    <script src="//code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -39,7 +44,11 @@
       crossorigin="anonymous"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
       crossorigin="anonymous"></script>
-
+    <!-- Mapbox -->
+    <script src='//api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <script src='//api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
+  
+    <!-- Custom JS -->
     <script src="js/main.js"></script>
 </body>
 
