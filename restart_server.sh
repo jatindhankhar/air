@@ -1,3 +1,3 @@
 echo "Restarting Server"
-killall unicorn && unicorn -c path/to/unicorn.rb -E development -D
+killall unicorn && unicorn -c unicorn.rb -E development -D
 echo "Done :)"
