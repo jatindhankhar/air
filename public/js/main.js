@@ -127,10 +127,10 @@ function geocomplete() {
     $("#location-text")
         .geocomplete()
         .bind("geocode:result", function(event, result) {
-            //console.table(result);
-            //console.log(result.geometry.location.toString());
-            lat,
-            lng = result.geometry.location.toString();
+
+            location = result.geometry.location.toString();
+            lat, lng = location;
+            change_map_location(lat, lng);
 
         })
 };
