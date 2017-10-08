@@ -167,7 +167,6 @@ function geocomplete() {
         .bind("geocode:result", function(event, result) {
 
             res = result.geometry.location.toJSON();
-            console.log(res);
             change_map_location(res["lat"], res["lng"]);
             add_marker_to_map(res["lat"], res["lng"]);
             fetchYelpData(res["lat"], res["lng"])
@@ -189,14 +188,11 @@ function yelpToGeoJson(data) {
     var geo_json = []
     if ('businesses' in data) {
         for (business of data['businesses']) {
-            console.table(business);
             el = {}
             el['type'] = "Feature"
 
             geometry = {}
             geometry['type'] = "Point"
-            console.log("Coordinates");
-            console.log(business["coordinates"])
             geometry['coordinates'] = [business["coordinates"]["longitude"], business["coordinates"]["latitude"]]
             prop = {}
             prop['title'] = business['name']
@@ -224,7 +220,6 @@ function yelpToGeoJson(data) {
 }
 
 function addMarkerstoMap(data) {
-    console.log(data);
     geojson = yelpToGeoJson(data)
     var myLayer = L.mapbox.featureLayer().addTo(map);
     myLayer.on('layeradd', function(e) {
@@ -233,12 +228,6 @@ function addMarkerstoMap(data) {
         var image = feature.properties.image
         var stars = feature.properties.stars
         var slideshowContent;
-
-
-
-        //slideshowContent = '<div class="img-responsive">' +
-        //   '<img src="' + image + '" />' +
-        //  '</div>';
 
         slideshowContent = '<img class="img-responsive center-block" src="' + image + '" width="250px" height="250px"/>'
 
@@ -253,7 +242,7 @@ function addMarkerstoMap(data) {
 
         // http://leafletjs.com/reference.html#popup
         marker.bindPopup(popupContent, {
-            closeButton: false,
+            closeButton: true,
             minWidth: 320
         });
     });
