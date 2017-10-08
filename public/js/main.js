@@ -41,6 +41,7 @@ $(function() {
         search_category = $('#search-button').text().trim().toLowerCase();
         if (search_category == "city") {
             switch_textboxes(true);
+            remove_progess();
             geocomplete();
         } else {
             switch_textboxes(false);
@@ -50,6 +51,20 @@ $(function() {
 
 });
 
+function show_progress(refresh_state) {
+    if (refresh_state) {
+        $("#raw-json").hide();
+        $("#refresh-icon").show();
+    } else {
+        $("#raw-json").fadeOut("slow").show();
+        $("#refresh-icon").fadeIn("slow").hide();
+    }
+}
+
+function remove_progess() {
+    $("#raw-json").hide();
+    $("#refresh-icon").hide();
+}
 
 $("#target").submit(
     function(ev) {
@@ -57,6 +72,7 @@ $("#target").submit(
         //send an ajax request to our action
         search_text = $("#search-text").val().trim();
         search_category = $('#search-button').text().trim().toLowerCase();
+        show_progress(true);
         // Send ajax if city is not required
         if (search_category != "city") {
             $.ajax({
@@ -68,10 +84,9 @@ $("#target").submit(
                 dataType: "json",
                 success: function(data) {
                     //if our ajax request is successful, replace the content of our viz div with the response data
-                    alert("Done");
-                    alert(data);
+                    show_progress(false);
                     print_raw_json(data);
-                    console.log(data);
+
                 }
             });
         } else {
@@ -106,14 +121,14 @@ function change_map_location(lat, lng) {
 
     map.flyTo([lat, lng], 10, {
         animate: true,
-        duration: 5,
-        easeLinearity: 1
+        duration: 3,
+        easeLinearity: 0.1
     });
 
 }
 
-function switch_textboxes(location) {
-    if (location) {
+function switch_textboxes(show_geocode) {
+    if (show_geocode) {
         $("#search-text").hide();
         $("#location-text").show();
     } else {
@@ -128,9 +143,9 @@ function geocomplete() {
         .geocomplete()
         .bind("geocode:result", function(event, result) {
 
-            location = result.geometry.location.toString();
-            lat, lng = location;
-            change_map_location(lat, lng);
-
+            res = result.geometry.location.toJSON();
+            console.log(res);
+            change_map_location(res["lat"], res["lng"]);
+            add_marker_to_map(res["lat"], res["lng"]);
         })
 };

@@ -34,10 +34,17 @@ body {
     position: relative;
 }
 
+#refresh-icon {
+    display: none;
+    font-size: 200px;
+}
+
 #raw-json {
     color: white;
     font-size: 24px;
     overflow-y: auto;
     width: 100%;
     max-height: calc(60vh - 100px);
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
 }
