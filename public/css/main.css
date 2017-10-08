@@ -36,4 +36,8 @@ body {
 
 #raw-json {
     color: white;
+    font-size: 24px;
+    overflow-y: auto;
+    width: 100%;
+    max-height: calc(60vh - 100px);
 }
