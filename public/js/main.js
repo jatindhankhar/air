@@ -85,7 +85,8 @@ $("#target").submit(
                 success: function(data) {
                     //if our ajax request is successful, replace the content of our viz div with the response data
                     show_progress(false);
-                    print_raw_json(data);
+                    //print_raw_json(data);
+                    handle_json(data, search_category)
 
                 }
             });
@@ -94,6 +95,18 @@ $("#target").submit(
         }
     }
 );
+
+function handle_json(data, search_category) {
+    if (search_category === "airport") {
+        print_raw_json(data);
+        if ("AirportInfoResult" in data && ("longitude" in data["AirportInfoResult"] && "latitude" in data["AirportInfoResult"])) {
+            zoom_to_airport(data["AirportInfoResult"]["latitude"], data["AirportInfoResult"]["longitude"])
+        }
+    } else if (search_category === "flight") {
+        print_raw_json(data);
+    }
+
+}
 
 function print_raw_json(data) {
     $('#raw-json').text(JSON.stringify(data, null, 4));
@@ -135,6 +148,16 @@ function switch_textboxes(show_geocode) {
         $("#search-text").show();
         $("#location-text").hide();
     }
+}
+
+function zoom_to_airport(lat, lng) {
+    lat = parseFloat(lat)
+    lng = parseFloat(lng)
+    map.flyTo([lat, lng], 16, {
+        animate: true,
+        duration: 3,
+        easeLinearity: 0.1
+    });
 }
 
 function geocomplete() {
