@@ -132,7 +132,7 @@ function init_map(lat, lng) {
 
 function change_map_location(lat, lng) {
 
-    map.flyTo([lat, lng], 10, {
+    map.flyTo([lat, lng], 14, {
         animate: true,
         duration: 3,
         easeLinearity: 0.1
@@ -201,10 +201,19 @@ function yelpToGeoJson(data) {
             prop = {}
             prop['title'] = business['name']
             prop['description'] = flattenToString(business['location'])
-            prop['marker-color'] = '#3bb2d0'
+            prop['marker-color'] = '#000000'
             prop['marker-size'] = 'large'
-            prop['marker-symbol'] = 'rocket'
-
+            business_type = business['categories'][0]['title'].toLowerCase()
+            if (business_type.includes("wine") || business_type.includes("bar"))
+                prop['marker-symbol'] = 'bar'
+            else if (business_type.includes("restaurant") || business_type.includes("food"))
+                prop['marker-symbol'] = 'restaurant'
+            else if (business_type.includes("park"))
+                prop['marker-symbol'] = 'park'
+            else
+                prop['marker-symbol'] = 'rocket'
+            prop['image'] = business['image_url']
+            prop['stars'] = business['rating']
             el['geometry'] = geometry
             el['properties'] = prop
 
@@ -218,6 +227,37 @@ function addMarkerstoMap(data) {
     console.log(data);
     geojson = yelpToGeoJson(data)
     var myLayer = L.mapbox.featureLayer().addTo(map);
+    myLayer.on('layeradd', function(e) {
+        var marker = e.layer;
+        var feature = marker.feature;
+        var image = feature.properties.image
+        var stars = feature.properties.stars
+        var slideshowContent;
+
+
+
+        //slideshowContent = '<div class="img-responsive">' +
+        //   '<img src="' + image + '" />' +
+        //  '</div>';
+
+        slideshowContent = '<img class="img-responsive center-block" src="' + image + '" width="250px" height="250px"/>'
+
+
+
+        // Create custom popup content
+        var popupContent = '<div class="popup text-center" style="border-color: #a29a9a;border-width: 3px;border-style: groove;"> ' +
+            '<h2>' + feature.properties.title + '</h2>' + '<br>' + '<h2>' +
+            stars + '<i class="fa fa-star fa-2x fa-spin" style="color: yellow;"> </i>' + '</h2>' +
+            slideshowContent +
+            '</div>';
+
+        // http://leafletjs.com/reference.html#popup
+        marker.bindPopup(popupContent, {
+            closeButton: false,
+            minWidth: 320
+        });
+    });
+
     myLayer.setGeoJSON(geojson);
 
 
