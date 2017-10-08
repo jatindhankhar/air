@@ -21,9 +21,7 @@ post '/search' do
   when "flight"
     return FlightAware.get_flight_details params["search-text"]
 
-  when "city"
-   return "Boi"
-
+  
   when "airport"
     return FlightAware.get_airport_info params["search-text"]
   else
@@ -35,3 +33,15 @@ post '/search' do
   return {"status" => "Bad"}.to_json
   
 end 
+
+
+post '/yelp' do
+  content_type :json
+
+  if params.key? :lat and params.key? :lng and not params[:lat].nil? and not params[:lng].nil?
+    return Yelp.get_businesses params[:lat],params[:lng]
+  end
+
+  return {"status" => "Bad"}.to_json
+  
+end

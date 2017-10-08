@@ -27,7 +27,22 @@ class FlightAware
         if response.code == 200
             return response.body
         else
-            return {"status" => "error", "message" => "No such Flight"}.to_json 
+            return {"status" => "error", "message" => "No such Airport"}.to_json 
         end
     end
+end
+
+class Yelp
+   @YELP_ACCESS_TOKEN = ENV['YELP_ACCESS_TOKEN']
+   @baseUrl = "https://api.yelp.com/v3/businesses/search"
+   
+   def self.get_businesses(lat,lng)
+       req_params = {"latitude" => lat, "longitude" => lng}
+       response = RestClient.get @baseUrl, {params: req_params, Authorization: "Bearer #{@YELP_ACCESS_TOKEN}"}
+       if response.code == 200
+          return response.body
+       else
+        return {"status" => "error", "message" => "There was some error"}.to_json 
+       end        
+   end
 end

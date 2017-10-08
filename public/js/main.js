@@ -122,7 +122,7 @@ function add_marker_to_map(lat, lng) {
 
 function init_map(lat, lng) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiamF0aW5kaGFua2hhciIsImEiOiJjajhnN3B6azUwOWIyMzJuNmNvMWlsbXg0In0.8hqJ0HFxyROInUXSN6h5KQ';
-    map = L.mapbox.map('map-container', 'mapbox.streets')
+    map = L.mapbox.map('map-container', 'mapbox.streets', 'map-popups', 'mapbox.light')
         .setView([lat, lng], 10);
 
     add_marker_to_map(lat, lng);
@@ -170,5 +170,71 @@ function geocomplete() {
             console.log(res);
             change_map_location(res["lat"], res["lng"]);
             add_marker_to_map(res["lat"], res["lng"]);
+            fetchYelpData(res["lat"], res["lng"])
         })
 };
+
+function flattenToString(obj) {
+    var key, array = []
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            array.push(obj[key])
+        }
+    }
+    return array.join(',')
+
+}
+
+function yelpToGeoJson(data) {
+    var geo_json = []
+    if ('businesses' in data) {
+        for (business of data['businesses']) {
+            console.table(business);
+            el = {}
+            el['type'] = "Feature"
+
+            geometry = {}
+            geometry['type'] = "Point"
+            console.log("Coordinates");
+            console.log(business["coordinates"])
+            geometry['coordinates'] = [business["coordinates"]["longitude"], business["coordinates"]["latitude"]]
+            prop = {}
+            prop['title'] = business['name']
+            prop['description'] = flattenToString(business['location'])
+            prop['marker-color'] = '#3bb2d0'
+            prop['marker-size'] = 'large'
+            prop['marker-symbol'] = 'rocket'
+
+            el['geometry'] = geometry
+            el['properties'] = prop
+
+            geo_json.push(el)
+        }
+    }
+    return geo_json
+}
+
+function addMarkerstoMap(data) {
+    console.log(data);
+    geojson = yelpToGeoJson(data)
+    var myLayer = L.mapbox.featureLayer().addTo(map);
+    myLayer.setGeoJSON(geojson);
+
+
+}
+
+function fetchYelpData(lat_q, lng_q) {
+    $.ajax({
+        method: "POST",
+        url: "/yelp",
+        //serialize the form and use it as data for our ajax request
+        data: { 'lat': lat_q, 'lng': lng_q },
+        //the type of data we are expecting back from server, could be json too
+        dataType: "json",
+        success: function(data) {
+            //if our ajax request is successful, replace the content of our viz div with the response data
+            addMarkerstoMap(data);
+
+        }
+    });
+}
