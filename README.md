@@ -8,19 +8,19 @@ Made as part of a challenge.
 
 ### Screenshots
 
-<img src="basic.png" />
+<img src="pictures/basic.png" />
 
 <hr>
 
-<img src="api_preview.png"/>
+<img src="pictures/api_preview.png"/>
 
 <hr>
 
-<img src="info.png" />
+<img src="pictures/info.png" />
 
 <hr>
 
-<img src="info_markers.png" />
+<img src="pictures/info_markers.png" />
 
 
 
